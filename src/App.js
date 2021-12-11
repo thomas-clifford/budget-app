@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import Footer from './compnents/Footer.js'
 import Header from './compnents/Header.js'
 import MonthView from './compnents/MonthView.js'
 import YearView from './compnents/YearView.js'
@@ -45,7 +46,7 @@ const years = [
           },
           {
               name: 'october',
-              remainingMoney: '$34.00'
+              remainingMoney: '-$34.00'
           },
           {
               name: 'november',
@@ -53,7 +54,7 @@ const years = [
           },
           {
               name: 'december',
-              remainingMoney: '$34.00'
+              remainingMoney: '-$34.00'
           },
       ]
   },
@@ -98,7 +99,7 @@ const years = [
           },
           {
               name: 'october',
-              remainingMoney: '$3.00'
+              remainingMoney: '-$3.00'
           },
           {
               name: 'november',
@@ -123,7 +124,7 @@ const years = [
           },
           {
               name: 'march',
-              remainingMoney: '$0.34'
+              remainingMoney: '-$0.34'
           },
           {
               name: 'april',
@@ -167,57 +168,60 @@ const years = [
 
 const App = () => {
   return (
-    <Router>
-      <div>
-        <Header pageTitle='Budget App'/>
-      </div>
-      <Switch>
-        <Route path='/about'>
-          <h2>about page</h2>
-          <h4>Author: Thomas Clifford</h4>
-          <h4>Disclaimer: No keyboards were harmed in the making of this website.</h4>
-        </Route>
-        <Route path='/january'>
-          <MonthView month='January'/>
-        </Route>
-        <Route path='/february'>
-          <MonthView month='February'/>
-        </Route>
-        <Route path='/march'>
-          <MonthView month='March'/>
-        </Route>
-        <Route path='/april'>
-          <MonthView month='April'/>
-        </Route>
-        <Route path='/may'>
-          <MonthView month='May'/>
-        </Route>
-        <Route path='/june'>
-          <MonthView month='June'/>
-        </Route>
-        <Route path='/july'>
-          <MonthView month='July'/>
-        </Route>
-        <Route path='/august'>
-          <MonthView month='August'/>
-        </Route>
-        <Route path='/september'>
-          <MonthView month='September'/>
-        </Route>
-        <Route path='/october'>
-          <MonthView month='October'/>
-        </Route>
-        <Route path='/november'>
-          <MonthView month='November'/>
-        </Route>
-        <Route path='/december'>
-          <MonthView month='December'/>
-        </Route>
-        <Route path='/'>
-          <YearView years={years}/>
-        </Route>
-      </Switch>
-    </Router>
+    <div className='container'>
+        <Router>
+            <Header pageTitle='Budget App'/>
+            <div className='body'>
+                <Switch>
+                    <Route path='/about'>
+                        <h2>about page</h2>
+                        <h4>Author: Thomas Clifford</h4>
+                        <h4>Disclaimer: No keyboards were harmed in the making of this website.</h4>
+                    </Route>
+                    <Route path='/january'>
+                        <MonthView month='January'/>
+                    </Route>
+                    <Route path='/february'>
+                        <MonthView month='February'/>
+                    </Route>
+                    <Route path='/march'>
+                        <MonthView month='March'/>
+                    </Route>
+                    <Route path='/april'>
+                        <MonthView month='April'/>
+                    </Route>
+                    <Route path='/may'>
+                        <MonthView month='May'/>
+                    </Route>
+                    <Route path='/june'>
+                        <MonthView month='June'/>
+                    </Route>
+                    <Route path='/july'>
+                        <MonthView month='July'/>
+                    </Route>
+                    <Route path='/august'>
+                        <MonthView month='August'/>
+                    </Route>
+                    <Route path='/september'>
+                        <MonthView month='September'/>
+                    </Route>
+                    <Route path='/october'>
+                        <MonthView month='October'/>
+                    </Route>
+                    <Route path='/november'>
+                        <MonthView month='November'/>
+                    </Route>
+                    <Route path='/december'>
+                        <MonthView month='December'/>
+                    </Route>
+                    <Route path='/'>
+                        <YearView years={years}/>
+                    </Route>
+                </Switch>
+            </div>
+            <Footer/>
+        </Router>
+    </div>
   )
 }
 

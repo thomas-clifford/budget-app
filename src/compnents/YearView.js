@@ -12,11 +12,13 @@ const YearView = ({ years }) => {
 
 
     return (
-        <div>
+        <div className='homePage'>
             <h3>Year</h3>
             <select
+                className='yearSelect'
                 defaultValue={years[years.length-1].name}
-                onChange={handleYearSelection}>
+                onChange={handleYearSelection}
+                style={{display: 'block'}}>
                     {years.map((year) => (
                         <option key={year.name}>{year.name}</option>
                     ))}

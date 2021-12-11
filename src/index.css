@@ -1,13 +1,172 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+* {
+  font-family: 'Poppins';
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container {
+  max-width: 90%;
+  margin: 30px auto;
+  overflow: auto;
+  border: 1px solid rgb(79, 192, 104);
+  padding: 30px;
+  padding-bottom: 0;
+  border-radius: 5px;
+}
+
+.header {
+  /* display: flex;
+  justify-content: flex-start;
+  align-items: center; */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.footer {
+  padding-top: 10px;
+  padding-bottom: 0;
+  text-align: center;
+  font-size: 15px;
+}
+
+.homePage {
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+}
+
+.yearSelect {
+  border-radius: 5px;
+  font-size: 18px;
+  height: 40px;
+  text-align: center;
+  margin: auto;
+  width: 30%;
+  margin-bottom: 15px;
+}
+
+.productSelect {
+  border-radius: 5px;
+  font-size: 15px;
+  height: 30px;
+  text-align: center;
+  margin: auto;
+  width: 100%;
+}
+
+.productPrice {
+  height: 30px;
+  text-align: center;
+  width: 80%;
+}
+
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.month {
+  text-align: center;
+  display: inline;
+  color: black;
+}
+
+.monthView {
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+}
+
+.spendingCategory {
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+  border-bottom: 1px solid rgb(79, 192, 104);
+}
+
+.spendingCategory h3 {
+  text-align: left;
+  padding-bottom: 5px;
+}
+
+.spendingCategoryTable {
+  width: 100%;
+  border: 1px solid rgb(79, 192, 104);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.spendingCategoryAddTable {
+  width: 60%;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@media (max-width: 1300px) {
+  .spendingCategoryAddTable {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+  }
+}
+
+.btn {
+  display: inline-block;
+  background: rgb(79, 192, 104);
+  color: rgb(0, 0, 0);
+  border: none;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  width: 60%;
+  height: 30px;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:hover {
+  transform: scale(0.95);
+}
+
+.btn:active {
+  transform: scale(0.90);
+  background-color: rgb(167, 172, 168);
+}
+
+a {
+  text-decoration: none;
+  color:rgb(79, 192, 104);
+}
+
+a:hover {
+  color: black;
+}
+
+a:active {
+  color:rgb(144, 248, 167);
+}
+
+.monthLink {
+  border-radius: 5px;
+  padding-top: 10px;
+}
+
+.monthLink:hover {
+  transform: scale(0.98);
+}
+
+.monthLink:active {
+  transform: scale(0.95);
+  background-color: rgb(167, 172, 168) !important;
 }

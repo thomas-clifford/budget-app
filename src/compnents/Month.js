@@ -1,6 +1,7 @@
-const Month = ({month, amount}) => {
+const Month = ({month, amount, monthColor}) => {
+    console.log(monthColor)
     return (
-        <div>
+        <div className='month' style={{backgroundColor: monthColor}}>
             <h3>{month}</h3>
             <p>{amount}</p>
         </div>

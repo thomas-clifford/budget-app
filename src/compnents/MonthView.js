@@ -15,14 +15,14 @@ const MonthView = ({ month }) => {
     ]
 
     return (
-        <>
+        <div className='monthView'>
             <div>
                 <h1>{month}</h1>
             </div>
             {spendingCategories.map((category) => 
                 <SpendingCategory categoryName={category}/>
             )}
-        </>
+        </div>
     )
 }
 
