@@ -62,6 +62,8 @@ export default {
     years: [],
     selectedYear: 0,
     selectedMonth: null,
+    templateMonth: null,
+    futureMonth: false
   }),
   mounted() {
     this.getUserData();
@@ -79,11 +81,30 @@ export default {
         .then((doc) => {
           const data = doc.data();
           this.yearlySummary = data.years;
+          this.templateMonth = data.template;
         });
       for (const year of this.yearlySummary) {
         this.years.push(year.name);
       }
+      this.setFutureMonthsToTemplate();
       this.getYearData();
+    },
+    setFutureMonthsToTemplate() {
+      var currentYearIndex = 0;
+      var currentMonthIndex = 0;
+      for (var year of this.yearlySummary) {
+        for (var month of year.months) {
+          const evalDate = new Date(year.name, this.getMonthNumber(month.name));
+          const currentDate = new Date();
+          if (evalDate > currentDate && evalDate.getMonth() != currentDate.getMonth() && this.yearlySummary[currentYearIndex].months[currentMonthIndex] != this.templateMonth) {
+            this.templateMonth.name = month.name;
+            this.yearlySummary[currentYearIndex].months[currentMonthIndex] = JSON.parse(JSON.stringify(this.templateMonth));
+          }
+          currentMonthIndex++;
+        }
+        currentMonthIndex = 0;
+        currentYearIndex++;
+      }
     },
     changeYear(route) {
       if (!this.selectedYear) {
@@ -105,32 +126,59 @@ export default {
       }
     },
     getMoneyFormat: utils.getMoneyFormat,
+    getMonthNumber: utils.getMonthNumber,
     showMonth(month) {
-      this.selectedMonth = month;
+      const selectedDate = new Date(this.selectedYear, this.getMonthNumber(month.name));
+      const currentDate = new Date();
+      if (selectedDate > currentDate && selectedDate.getMonth() != currentDate.getMonth()) {
+        this.futureMonth = true;
+        this.templateMonth.name = month.name;
+        this.selectedMonth = this.templateMonth;
+      } else {
+        this.selectedMonth = month;
+      }
       this.$router
         .replace({ path: `/home/${this.selectedYear}/${this.selectedMonth.name}` })
         .catch(() => {});
     },
     async resetData() {
+      var changedYear;
+      var changedMonth;
       for (var year of this.yearlySummary) {
-        for (var month of year.months) {
-          month.balance = 0;
-          for (var assetCategory of month.assetCategories) {
-            month.balance += parseFloat(assetCategory.total);
-          }
-          for (var spendingCategory of month.spendingCategories) {
-            month.balance -= parseFloat(spendingCategory.total);
-          }
-          year.balance += month.balance;
+        if (year.name == this.selectedYear) {
+          changedYear = year;
         }
       }
-      await USERS.doc("tclifford5225@gmail.com").set({
+      if (this.selectedMonth) {
+        for (var month of changedYear.months) {
+          if (month.name == this.selectedMonth.name) {
+            changedMonth = month;
+          }
+        }
+        var assetAmount = 0;
+        var spendingAmount = 0;
+        for (var a of changedMonth.assetCategories) {
+          for (var assetCategory of a.subcategories) {
+            assetAmount += parseFloat(assetCategory.actualAmount);
+          }
+        }
+        for (var s of changedMonth.spendingCategories) {
+          for (var spendingCategory of s.subcategories) {
+            spendingAmount += parseFloat(spendingCategory.actualAmount);
+          }
+        }
+        var balance = assetAmount - spendingAmount;
+        changedMonth.balance = balance;
+      }
+      await USERS.doc("tclifford5225@gmail.com").update({
         years: this.yearlySummary
       })
       this.selectedMonth = null;
       this.selectedYear = parseInt(
         this.$route.path.substring(this.$route.path.lastIndexOf("/") + 1)
       );
+      this.changeYear(`Home-${this.selectedYear}`)
+      this.futureMonth = false;
     },
   },
 };

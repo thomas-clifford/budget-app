@@ -176,7 +176,7 @@ export default {
       { text: "Difference", value: "differenceMoney" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    tableCategories: [],
+    tableCategories: [{}],
     editedIndex: -1,
     editedItem: {
       name: "",
