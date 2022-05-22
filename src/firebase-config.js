@@ -1,15 +1,16 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import config from "../config"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBMF_2ntihf9wRudtFy4jOPaU4p8Bio2vY",
-    authDomain: "budget-app-9fb29.firebaseapp.com",
-    projectId: "budget-app-9fb29",
-    storageBucket: "budget-app-9fb29.appspot.com",
-    messagingSenderId: "943349803469",
-    appId: "1:943349803469:web:6bbbbf871aaaea7ce2fc84"
+    apiKey: config.apiKey,
+    authDomain: config.authDomain,
+    projectId: config.projectId,
+    storageBucket: config.storageBucket,
+    messagingSenderId: config.messagingSenderId,
+    appId: config.appId
   };
 
 // Initialize the connection to Firebase
