@@ -11,24 +11,27 @@
     </div>
     
     <p class="text-h4">Assets</p>
-    <CategoryTable v-for="(category, index) in monthData.assetCategories" :key="index" :category="category"/>
+    <CategoryTable v-for="(category, index) in monthData.assetCategories" :key="index" :ind="index" :category="category" :type="'Assets'" @change-values="updateData()"/>
+    <NewCategoryTableBtn :categoryType="'Asset'" @add-category="addAssetCategory"/>
 
     <p class="text-h4 pt-5">Spending</p>
     <div class="spending-container">
-      <CategoryTable v-for="(category, index) in monthData.spendingCategories" :key="index" :category="category"/>
+      <CategoryTable v-for="(category, index) in monthData.spendingCategories" :key="index" :ind="index" :category="category" :type="'Spending'" @change-values="updateData()"/>
     </div>
+    <NewCategoryTableBtn :categoryType="'Spending'" @add-category="addSpendingCategory"/>
   </div>
 </template>
 
 <script>
 import CategoryTable from "./CategoryTable.vue";
 import utils from '../shared/utils.js';
+import NewCategoryTableBtn from '../components/NewCategoryTableBtn.vue'
 export default {
   name: "Month",
   props: {
     monthData: Object,
   },
-  components: { CategoryTable },
+  components: { CategoryTable, NewCategoryTableBtn },
   data: () => ({
     positiveBalance: true,
     totalProjected: 0,
@@ -62,6 +65,13 @@ export default {
       this.totalActual = actualAssetAmount - actualSpendingAmount;
       this.difference = this.totalProjected - this.totalActual
       this.monthData.balance = this.totalActual;
+      this.monthData.balance < 0 ? this.positiveBalance = false : this.positiveBalance = true;
+    },
+    addAssetCategory(name) {
+      this.monthData.assetCategories = [...this.monthData.assetCategories, {name: name, subcategories: [], total: 0}]
+    },
+    addSpendingCategory(name) {
+      this.monthData.spendingCategories = [...this.monthData.spendingCategories, {name: name, subcategories: []}]
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
   <div id="template-container">
+    <Loader/>
     <Header />
     <div class="body">
       <p class="text-h4">Monthly Template</p>
@@ -10,53 +11,8 @@
         :key="index"
         :category="category"
       />
-      <v-dialog
-        v-model="assetDialog"
-        width="500"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <div class="new-category mb-5" v-on="on" v-bind="attrs">
-            <p class="text-h5">New Asset Category</p>
-          </div>
-        </template>
 
-        <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
-            Asset Category Name
-          </v-card-title>
-
-          <v-card-text>
-                <v-container>
-                  <v-text-field
-                    v-model="categoryName"
-                    label="Category Name"
-                    required
-                  ></v-text-field>
-                </v-container>
-              </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-              <v-btn
-              color="secondary"
-              text
-              @click="dialog = false"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="primary"
-              text
-              @click="addAssetCategory()"
-            >
-              Add Category
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
+      <NewCategoryTableBtn :categoryType="'Asset'" @add-category="addAssetCategory"/>
 
       <p class="text-h4 pt-5">Spending</p>
       <div class="spending-container">
@@ -66,52 +22,9 @@
           :category="category"
         />
       </div>
-      <v-dialog
-          v-model="spendingDialog"
-          width="500"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <div class="new-category mb-5" v-on="on" v-bind="attrs">
-              <p class="text-h5">New Spending Category</p>
-            </div>
-          </template>
 
-          <v-card>
-            <v-card-title class="text-h5 grey lighten-2">
-              Spending Category Name
-            </v-card-title>
+      <NewCategoryTableBtn :categoryType="'Spending'" @add-category="addSpendingCategory"/>
 
-            <v-card-text>
-                  <v-container>
-                    <v-text-field
-                      v-model="categoryName"
-                      label="Category Name"
-                      required
-                    ></v-text-field>
-                  </v-container>
-                </v-card-text>
-
-            <v-divider></v-divider>
-            
-            <v-card-actions>
-              <v-spacer></v-spacer>
-                <v-btn
-                color="secondary"
-                text
-                @click="dialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="primary"
-                text
-                @click="addSpendingCategory()"
-              >
-                Add Category
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       <v-btn color="primary" class="mb-5" @click="saveTemplate">Save Template</v-btn>
     </div>
   </div>
@@ -121,9 +34,11 @@
 import Header from "../components/Header.vue";
 import CategoryTable from "../components/CategoryTable.vue";
 import { USERS } from "../firebase-config";
+import Loader from "../components/Loader.vue";
+import NewCategoryTableBtn from "../components/NewCategoryTableBtn.vue"
 export default {
   name: "BudgetTemplate",
-  components: { Header, CategoryTable },
+  components: { Header, CategoryTable, Loader, NewCategoryTableBtn },
   data: () => ({
     yearlySummary: [],
     templateData: {
@@ -131,9 +46,6 @@ export default {
       assetCategories: [],
       spendingCategories: [],
     },
-    assetDialog: false,
-    spendingDialog: false,
-    categoryName: ''
   }),
   mounted() {
     this.getUserData();
@@ -152,15 +64,11 @@ export default {
           this.templateData = data.template;
         });
     },
-    addAssetCategory() {
-      this.assetDialog = false;
-      this.templateData.assetCategories = [...this.templateData.assetCategories, {name: this.categoryName, subcategories: [], total: 0}]
-      this.categoryName = '';
+    addAssetCategory(name) {
+      this.templateData.assetCategories = [...this.templateData.assetCategories, {name: name, subcategories: [], total: 0}]
     },
-    addSpendingCategory() {
-      this.spendingDialog = false;
-      this.templateData.spendingCategories = [...this.templateData.spendingCategories, {name: this.categoryName, subcategories: []}]
-      this.categoryName = '';
+    addSpendingCategory(name) {
+      this.templateData.spendingCategories = [...this.templateData.spendingCategories, {name: name, subcategories: []}]
     }
   },
 };
@@ -185,23 +93,7 @@ export default {
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
 }
-.new-category {
-  display: grid;
-  place-items: center;
-  min-height: 10em;
-  border-radius: 5px;
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='rgb(102,187,106)' stroke-width='3' stroke-dasharray='6%2c 10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-}
-.new-category:hover{
-  background-color: var(--v-primary-base);
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-}
 
-.new-category:hover .plusIcon{
-  background-color: rgb(19, 53, 118);
-  color: rgb(255, 255, 255);
-}
 @media only screen and (max-width: 1615px) {
     .spending-container {
         display: block;

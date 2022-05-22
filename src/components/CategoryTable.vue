@@ -159,6 +159,8 @@ export default {
   name: "CategoryTable",
   props: {
     category: Object,
+    type: String,
+    ind: Number
   },
   data: () => ({
     dialog: false,
@@ -279,6 +281,7 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+      this.$emit("change-values", this.type, this.ind, this.tableCategories);
     },
     addToTotal() {
         this.editedItem.projectedAmount = parseFloat(this.editedItem.projectedAmount) + parseFloat(this.addProjectedAmount);
@@ -304,6 +307,7 @@ export default {
       } else {
         this.tableCategories.push(this.editedItem);
       }
+      this.$emit("change-values", this.type, this.ind, this.tableCategories);
       this.close();
     },
     getMoneyFormat: utils.getMoneyFormat,
