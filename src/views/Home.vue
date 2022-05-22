@@ -170,7 +170,8 @@ export default {
         var balance = assetAmount - spendingAmount;
         changedMonth.balance = balance;
       }
-      await USERS.doc("tclifford5225@gmail.com").update({
+      await USERS.doc("tclifford5225@gmail.com").set({
+        template: this.templateMonth,
         years: this.yearlySummary
       })
       this.selectedMonth = null;
