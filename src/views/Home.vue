@@ -57,6 +57,7 @@ export default {
   name: "Home",
   components: { Header, Month },
   data: () => ({
+    userEmail: '',
     months: [],
     yearlySummary: [],
     years: [],
@@ -66,6 +67,9 @@ export default {
     futureMonth: false
   }),
   mounted() {
+    if (localStorage.getItem("userEmail")){
+      this.userEmail = localStorage.getItem("userEmail");
+    }
     this.getUserData();
   },
   methods: {
@@ -76,7 +80,7 @@ export default {
       );
     },
     async getUserData() {
-      await USERS.doc("tclifford5225@gmail.com")
+      await USERS.doc(this.userEmail)
         .get()
         .then((doc) => {
           const data = doc.data();
@@ -170,7 +174,7 @@ export default {
         var balance = assetAmount - spendingAmount;
         changedMonth.balance = balance;
       }
-      await USERS.doc("tclifford5225@gmail.com").set({
+      await USERS.doc(this.userEmail).set({
         template: this.templateMonth,
         years: this.yearlySummary
       })
