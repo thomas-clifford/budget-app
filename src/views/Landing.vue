@@ -100,6 +100,7 @@
 
 <script>
 import { AUTH, USERS } from '../firebase-config'
+import utils from '../shared/utils'
 export default {
   name: "Landing",
   data: () => ({
@@ -119,12 +120,22 @@ export default {
     createEmail: '',
     createPassword: '',
     confirmPassword: '',
-    unmatchedPasswords: false
+    unmatchedPasswords: false,
+    defaultYear: []
   }),
+  watch: {
+    userEmail: {
+      handler() {
+        localStorage.setItem('userEmail', this.userEmail);
+      },
+      deep: true
+    }
+  },
   methods: {
     async authenticate() {
       this.invalidCredentials = false;
       try {
+        localStorage.setItem('userEmail', this.userEmail);
         await AUTH.signInWithEmailAndPassword(this.userEmail, this.userPassword);
         this.$router.replace({ name: 'Home' }).catch(() => {});
       } catch (err) {
@@ -134,11 +145,13 @@ export default {
     async createAccount() {
       if (this.createPassword === this.confirmPassword) {
         try {
+          this.userEmail = this.createEmail;
           await AUTH.createUserWithEmailAndPassword(this.createEmail, this.createPassword);
+          this.populateYear();
           await USERS.doc(this.createEmail).set({
             name: this.fullName,
-            years: [],
-            template: []
+            years: this.defaultYear,
+            template: this.defaultYear[0].months[0]
           });
           this.$router.replace({ name: 'Home' }).catch(() => {});
         } catch (err) {
@@ -147,8 +160,25 @@ export default {
       } else {
         this.unmatchedPasswords = true;
       }
-      
-      
+    },
+    populateYear() {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      var currentMonth = currentDate.getMonth();
+      var monthsRemaining = [];
+      for (currentMonth; currentMonth < 12; currentMonth++) {
+        monthsRemaining.push({
+          assetCategories: [],
+          spendingCategories: [],
+          balance: 0,
+          name: utils.getMonthName(currentMonth)
+        });
+      }
+      this.defaultYear = [{
+        name: currentYear,
+        balance: 0,
+        months: monthsRemaining
+      }];
     }
   },
 };
@@ -158,18 +188,10 @@ export default {
   padding-top: 25vh;
   display: grid;
   place-items: center;
+  width: 300px;
+  margin: 0 auto;
 }
 .credential {
-  width: 15%;
-}
-@media only screen and (max-width: 1910px) {
-  .credential {
-    width: 35%;
-  }
-}
-@media only screen and (max-width: 615px) {
-  .credential {
-    width: 90%;
-  }
+  width: 100%;
 }
 </style>
