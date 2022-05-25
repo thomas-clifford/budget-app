@@ -10,6 +10,7 @@
         v-for="(category, index) in templateData.assetCategories"
         :key="index"
         :category="category"
+        @change-values="updateData(templateData)"
       />
 
       <NewCategoryTableBtn :categoryType="'Asset'" @add-category="addAssetCategory"/>
@@ -20,6 +21,7 @@
           v-for="(category, index) in templateData.spendingCategories"
           :key="index"
           :category="category"
+          @change-values="updateData(templateData)"
         />
       </div>
 
@@ -36,6 +38,7 @@ import CategoryTable from "../components/CategoryTable.vue";
 import { USERS } from "../firebase-config";
 import Loader from "../components/Loader.vue";
 import NewCategoryTableBtn from "../components/NewCategoryTableBtn.vue"
+import utils from "../shared/utils"
 export default {
   name: "BudgetTemplate",
   components: { Header, CategoryTable, Loader, NewCategoryTableBtn },
@@ -45,6 +48,7 @@ export default {
       name: "",
       assetCategories: [],
       spendingCategories: [],
+      balance: 0
     },
   }),
   mounted() {
@@ -69,7 +73,8 @@ export default {
     },
     addSpendingCategory(name) {
       this.templateData.spendingCategories = [...this.templateData.spendingCategories, {name: name, subcategories: []}]
-    }
+    },
+    updateData: utils.updateData
   },
 };
 </script>
