@@ -67,10 +67,6 @@ export default {
   background-color: var(--v-primary-base);
   color: rgb(255, 255, 255);
   cursor: pointer;
-}
-
-.new-category:hover .plusIcon{
-  background-color: rgb(19, 53, 118);
-  color: rgb(255, 255, 255);
+  transform: scale(1.01);
 }
 </style>

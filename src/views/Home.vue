@@ -39,7 +39,7 @@
         </div>
       </div>
       <div v-else>
-        <Month :monthData="selectedMonth" @update-month="updateMonth" />
+        <Month :monthData="selectedMonth" @update-month="updateMonth" @render-month="renderMonth" :key="monthKey"/>
       </div>
 
       <p id="about" v-on:click="navigateTo('About')">ABOUT</p>
@@ -64,7 +64,8 @@ export default {
     selectedYear: 0,
     selectedMonth: null,
     templateMonth: null,
-    futureMonth: false
+    futureMonth: false,
+    monthKey: 0
   }),
   mounted() {
     if (localStorage.getItem("userEmail")){
@@ -186,10 +187,14 @@ export default {
       this.futureMonth = false;
     },
     updateMonth(editedMonth) {
+      console.log("Umm hello?");
       var yearIndex = this.yearlySummary.findIndex(x => x.name === this.selectedYear);
       var monthIndex = this.yearlySummary[yearIndex].months.findIndex(x => x.name === this.selectedMonth.name);
       this.yearlySummary[yearIndex].months[monthIndex] = editedMonth;
       this.yearlySummary[yearIndex].months[monthIndex].edited = true;
+    },
+    renderMonth() {
+      this.monthKey += 1;
     }
   },
 };
