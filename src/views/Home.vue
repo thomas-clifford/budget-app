@@ -39,7 +39,7 @@
         </div>
       </div>
       <div v-else>
-        <Month :monthData="selectedMonth" />
+        <Month :monthData="selectedMonth" @update-month="updateMonth" />
       </div>
 
       <p id="about" v-on:click="navigateTo('About')">ABOUT</p>
@@ -100,7 +100,7 @@ export default {
         for (var month of year.months) {
           const evalDate = new Date(year.name, this.getMonthNumber(month.name));
           const currentDate = new Date();
-          if (evalDate > currentDate && evalDate.getMonth() != currentDate.getMonth() && this.yearlySummary[currentYearIndex].months[currentMonthIndex] != this.templateMonth) {
+          if (evalDate > currentDate && evalDate.getMonth() != currentDate.getMonth() && this.yearlySummary[currentYearIndex].months[currentMonthIndex] != this.templateMonth && !this.yearlySummary[currentYearIndex].months[currentMonthIndex].edited) {
             this.templateMonth.name = month.name;
             this.yearlySummary[currentYearIndex].months[currentMonthIndex] = JSON.parse(JSON.stringify(this.templateMonth));
           }
@@ -134,10 +134,10 @@ export default {
     showMonth(month) {
       const selectedDate = new Date(this.selectedYear, this.getMonthNumber(month.name));
       const currentDate = new Date();
-      if (selectedDate > currentDate && selectedDate.getMonth() != currentDate.getMonth()) {
+      if (!month.edited && selectedDate > currentDate && selectedDate.getMonth() != currentDate.getMonth()) {
         this.futureMonth = true;
         this.templateMonth.name = month.name;
-        this.selectedMonth = this.templateMonth;
+        this.selectedMonth = JSON.parse(JSON.stringify(this.templateMonth));
       } else {
         this.selectedMonth = month;
       }
@@ -185,6 +185,12 @@ export default {
       this.changeYear(`Home-${this.selectedYear}`)
       this.futureMonth = false;
     },
+    updateMonth(editedMonth) {
+      var yearIndex = this.yearlySummary.findIndex(x => x.name === this.selectedYear);
+      var monthIndex = this.yearlySummary[yearIndex].months.findIndex(x => x.name === this.selectedMonth.name);
+      this.yearlySummary[yearIndex].months[monthIndex] = editedMonth;
+      this.yearlySummary[yearIndex].months[monthIndex].edited = true;
+    }
   },
 };
 </script>

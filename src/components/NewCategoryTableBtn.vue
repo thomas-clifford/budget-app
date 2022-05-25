@@ -48,7 +48,6 @@ export default {
     }),
     methods: {
         addCategory() {
-            console.log(this.categoryName);
             this.$emit("add-category", this.categoryName);
             this.dialog = false;
         }

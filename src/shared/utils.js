@@ -25,7 +25,30 @@ const utils = {
             case 10: return "november";
             case 11: return "december";
         }
-    }
+    },
+    updateData(month) {
+        var projectedAssetAmount = 0;
+        var actualAssetAmount = 0;
+        var projectedSpendingAmount = 0;
+        var actualSpendingAmount = 0;
+        for (var a of month.assetCategories) {
+          for (var assetCategory of a.subcategories) {
+            projectedAssetAmount += parseFloat(assetCategory.projectedAmount);
+            actualAssetAmount += parseFloat(assetCategory.actualAmount);
+          }
+        }
+        for (var s of month.spendingCategories) {
+          for (var spendingCategory of s.subcategories) {
+            projectedSpendingAmount += parseFloat(spendingCategory.projectedAmount)
+            actualSpendingAmount += parseFloat(spendingCategory.actualAmount);
+          }
+        }
+        this.totalProjected = projectedAssetAmount - projectedSpendingAmount;
+        this.totalActual = actualAssetAmount - actualSpendingAmount;
+        this.difference = this.totalProjected - this.totalActual
+        month.balance = this.totalActual;
+        month.balance < 0 ? this.positiveBalance = false : this.positiveBalance = true;
+      }
 } 
 
 export default utils;

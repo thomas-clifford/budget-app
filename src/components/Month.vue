@@ -11,12 +11,12 @@
     </div>
     
     <p class="text-h4">Assets</p>
-    <CategoryTable v-for="(category, index) in monthData.assetCategories" :key="index" :ind="index" :category="category" :type="'Assets'" @change-values="updateData()"/>
+    <CategoryTable v-for="(category, index) in monthData.assetCategories" :key="index" :ind="index" :category="category" :type="'Assets'" @change-values="updateData(monthData)"/>
     <NewCategoryTableBtn :categoryType="'Asset'" @add-category="addAssetCategory"/>
 
     <p class="text-h4 pt-5">Spending</p>
     <div class="spending-container">
-      <CategoryTable v-for="(category, index) in monthData.spendingCategories" :key="index" :ind="index" :category="category" :type="'Spending'" @change-values="updateData()"/>
+      <CategoryTable v-for="(category, index) in monthData.spendingCategories" :key="index" :ind="index" :category="category" :type="'Spending'" @change-values="updateData(monthData)"/>
     </div>
     <NewCategoryTableBtn :categoryType="'Spending'" @add-category="addSpendingCategory"/>
   </div>
@@ -39,34 +39,11 @@ export default {
     difference: 0
   }),
   mounted() {
-    this.updateData();
     this.monthData.balance < 0 ? this.positiveBalance = false : this.positiveBalance = true;
   },
   methods: {
     getMoneyFormat: utils.getMoneyFormat,
-    updateData() {
-      var projectedAssetAmount = 0;
-      var actualAssetAmount = 0;
-      var projectedSpendingAmount = 0;
-      var actualSpendingAmount = 0;
-      for (var a of this.monthData.assetCategories) {
-        for (var assetCategory of a.subcategories) {
-          projectedAssetAmount += parseFloat(assetCategory.projectedAmount);
-          actualAssetAmount += parseFloat(assetCategory.actualAmount);
-        }
-      }
-      for (var s of this.monthData.spendingCategories) {
-        for (var spendingCategory of s.subcategories) {
-          projectedSpendingAmount += parseFloat(spendingCategory.projectedAmount)
-          actualSpendingAmount += parseFloat(spendingCategory.actualAmount);
-        }
-      }
-      this.totalProjected = projectedAssetAmount - projectedSpendingAmount;
-      this.totalActual = actualAssetAmount - actualSpendingAmount;
-      this.difference = this.totalProjected - this.totalActual
-      this.monthData.balance = this.totalActual;
-      this.monthData.balance < 0 ? this.positiveBalance = false : this.positiveBalance = true;
-    },
+    updateData: utils.updateData,
     addAssetCategory(name) {
       this.monthData.assetCategories = [...this.monthData.assetCategories, {name: name, subcategories: [], total: 0}]
     },
