@@ -69,6 +69,9 @@ const utils = {
       }
       this.$emit("render-month");
       this.updateData(monthData);
+    },
+    render() {
+      this.$emit("render-month");
     }
 } 
 

@@ -288,6 +288,7 @@ export default {
       this.dialogDeleteCategory = false;
       this.$emit("delete-category", {ind: this.ind, category: this.category});
       this.initialize();
+      this.$emit("render-month");
     },
     close() {
       this.dialog = false;

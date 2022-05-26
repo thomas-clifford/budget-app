@@ -1,6 +1,5 @@
 <template>
-  <div id="template-container">
-    <Loader/>
+  <div id="template-container" :key="templateKey">
     <Header />
     <div class="body">
       <p class="text-h4">Monthly Template</p>
@@ -9,8 +8,11 @@
       <CategoryTable
         v-for="(category, index) in templateData.assetCategories"
         :key="index"
+        :ind="index"
         :category="category"
         @change-values="updateData(templateData)"
+        @delete-category="deleteCategory(templateData, $event)"
+        @render-month="render"
       />
 
       <NewCategoryTableBtn :categoryType="'Asset'" @add-category="addAssetCategory"/>
@@ -20,8 +22,11 @@
         <CategoryTable
           v-for="(category, index) in templateData.spendingCategories"
           :key="index"
+          :ind="index"
           :category="category"
           @change-values="updateData(templateData)"
+          @delete-category="deleteCategory(templateData, $event)"
+          @render-month="render"
         />
       </div>
 
@@ -36,20 +41,20 @@
 import Header from "../components/Header.vue";
 import CategoryTable from "../components/CategoryTable.vue";
 import { USERS } from "../firebase-config";
-import Loader from "../components/Loader.vue";
 import NewCategoryTableBtn from "../components/NewCategoryTableBtn.vue"
 import utils from "../shared/utils"
 export default {
   name: "BudgetTemplate",
-  components: { Header, CategoryTable, Loader, NewCategoryTableBtn },
+  components: { Header, CategoryTable, NewCategoryTableBtn },
   data: () => ({
     yearlySummary: [],
     templateData: {
       name: "",
       assetCategories: [],
       spendingCategories: [],
-      balance: 0
+      balance: 0,
     },
+    templateKey: 0
   }),
   mounted() {
     this.getUserData();
@@ -74,7 +79,11 @@ export default {
     addSpendingCategory(name) {
       this.templateData.spendingCategories = [...this.templateData.spendingCategories, {name: name, subcategories: []}]
     },
-    updateData: utils.updateData
+    updateData: utils.updateData,
+    deleteCategory: utils.deleteCategory,
+    render() {
+      this.templateKey += 1;
+    }
   },
 };
 </script>
