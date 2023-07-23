@@ -17,7 +17,7 @@
                 New Item
               </v-btn>
             </template>
-            <v-card>
+            <v-card v-on:keyup.enter="save">
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
@@ -27,6 +27,7 @@
                   <v-text-field
                     v-model="editedItem.name"
                     :label="category.name + ' Category'"
+                    autofocus
                   ></v-text-field>
                 </v-container>
                 <v-container v-else>
@@ -35,6 +36,7 @@
                       <v-text-field
                         v-model="editedItem.name"
                         :label="category.name + ' Category'"
+                        @focus="$event.target.select()"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -43,12 +45,14 @@
                       <v-text-field
                         v-model="editedItem.projectedAmount"
                         label="Projected Amount"
+                        @focus="$event.target.select()"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" md="6">
                       <v-text-field
                         v-model="editedItem.actualAmount"
                         label="Actual Amount"
+                        @focus="$event.target.select()"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -65,7 +69,7 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogAdd" max-width="500px">
-            <v-card>
+            <v-card v-on:keyup.enter="addToTotal()">
               <v-card-title>
                 <span class="text-h5">Add Amounts</span>
               </v-card-title>
@@ -101,6 +105,7 @@
                       <v-text-field
                         v-model="addProjectedAmount"
                         label="Projected Amount"
+                        @focus="$event.target.select()"
                       ></v-text-field>
                       <v-btn width="100%" @click="addToTotal()">+</v-btn>
                     </v-col>
@@ -108,6 +113,7 @@
                       <v-text-field
                         v-model="addActualAmount"
                         label="Actual Amount"
+                        @focus="$event.target.select()"
                       ></v-text-field>
                       <v-btn width="100%" @click="addToTotal()">+</v-btn>
                     </v-col>

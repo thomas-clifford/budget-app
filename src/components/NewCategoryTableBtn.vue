@@ -17,6 +17,8 @@
             v-model="categoryName"
             label="Category Name"
             required
+            autofocus
+            v-on:keyup.enter="addCategory()"
           ></v-text-field>
         </v-container>
       </v-card-text>
